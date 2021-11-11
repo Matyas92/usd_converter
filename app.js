@@ -1,92 +1,28 @@
-let question = document.querySelector("#question")
-let options = document.querySelector("#options")
-
-const questions = [{
-      question: "What the capital of France?",
-      options: ["Paris", "Bordeaux", "Lyon"],
-      answer: "Paris"
-   },
-   {
-
-      question: "When was the big bankrupcy?",
-      options: ["2008", "1933"],
-      answer: "2008"
-
-   },
-
-   {
-
-      question: "What is H2O?",
-      options: ["Saltpeter", "Water"],
-      answer: "Water"
-
-   },
-
-   {
-
-      question: "Who is Timothée Chamale?",
-      options: ["Actor", "Politician", "Dancer"],
-      answer: "Actor"
-
-   },
-
-   {
-
-      question: 'Who said? "Give me liberty, or give me death?"',
-      options: ["George Washington", "Patrcik Henry", "Thomas Jefferson"],
-      answer: "Patrcik Henry"
-
-   }
-
-]
-
-let questionNum = 0
-let correct = 0
-
-document.addEventListener("DOMContentLoaded", () => {
-   bringQuestions()
-
-})
 
 
-function bringQuestions() {
+var form = document.querySelector("form")
 
-   question.innerHTML = questions[questionNum].question
-   options.innerHTML = ""
-   for (const option of questions[questionNum].options) {
-      options.innerHTML += `<button class="option">${option}</button>`
-
-   }
+form.onsubmit = function(){
 
 
-   document.querySelectorAll(".option").forEach(option => {
-
-      option.onclick = () => {
-         if (option.textContent == questions[questionNum].answer && questionNum < 5) 
-         {
-            questionNum++
-            correct++
-         }
-         else{
-            questionNum++
-
-         }
-
-         if (questionNum != 5) 
-         {
-
-            bringQuestions()
-         }
-         else {
-            question.style.display = "none"
-            options.style.display = "none"
-            document.querySelector("#correct").textContent = "Final score: "+ correct + " out of " + questionNum
-         }
+   fetch('https://api.fastforex.io/fetch-all?api_key=0329169a1f-baaff4a35e-r2diyf')
+   .then(response => response.json())
+   .then(data => {
 
 
+      const currency = document.querySelector('#currency').value.toUpperCase()
+      const results = data.results[currency]
+
+      if(results !== undefined){
+         document.querySelector('#result').innerHTML = `1 USD equals ${results.toFixed(3)} ${currency}.`;
 
 
+      }else{
+
+         document.querySelector('#result').innerHTML = "Invalid currency"
       }
+
    })
 
+   return false
 }
